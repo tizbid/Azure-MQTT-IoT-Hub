@@ -19,8 +19,8 @@ async def send_data(msg_no):
     # Connect the client.
     await device_client.connect()
     
-    i = 0 
-    while i < msg_no:
+    
+    while True:
         
         # Generate random values for the wind turbine parameters
         tyme = time.strftime("%H:%M:%S", time.localtime())
@@ -50,14 +50,14 @@ async def send_data(msg_no):
         print("Sending message # + str(i) + : {}".format(msg) )
         await device_client.send_message(data)
         print ( "Message successfully sent" )
-        time.sleep(3)
-        i += 1
+        time.sleep(1)
+        
         
 
-    # Shut down the client
-    device_client.shutdown()
+        # Shut down the client
+        #device_client.shutdown()
             
         
 if __name__ == "__main__":
-    msg_no = 10
+    msg_no = 100
     asyncio.run(send_data(msg_no))
