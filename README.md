@@ -8,7 +8,7 @@ It extends further to show how to use this data to configure a Monitoring System
 * Azure blob storage
 
 
-##### Create Infastructure : 
+#### Create Infastructure : 
 
 The terraform configuration file `main.tf` contains the infastructure codes. It creates the following resources:
 
@@ -17,9 +17,9 @@ The terraform configuration file `main.tf` contains the infastructure codes. It 
 * An Azure Stream Analytics
 * An Azure blob storage
 
-Use `terraform apply` to create the infastructure.
+Run `terraform apply` to create the infastructures.
 
-##### Generate IoT data : 
+#### Generate IoT data : 
 
 `generate-data.py`, generates the IoT data used in this demo and connects to azure via MQTT using the Azure Python SDK
 
