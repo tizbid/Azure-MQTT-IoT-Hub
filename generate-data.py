@@ -1,60 +1,63 @@
-from paho.mqtt import client as mqtt
-import time
-import ssl
-import calendar
-import datetime
 import json
 import random
+import asyncio
 import os
+import time
 from dotenv import load_dotenv
-
+from azure.iot.device.aio import IoTHubDeviceClient
 
 #load environment variables
 load_dotenv()
 
 
-def on_subscribe(client, userdata, mid, granted_qos):
-    print('Subscribed for m' + str(mid))
+async def send_data(msg_no):
+    
+    conn_str = os.getenv("Pry_Conn_String")
+    # The client object is used to interact with your Azure IoT hub.
+    device_client = IoTHubDeviceClient.create_from_connection_string(conn_str)
 
-def on_connect(client, userdata, flags, rc):
-    print("Connected with result code "+str(rc))
+    # Connect the client.
+    await device_client.connect()
+    
+    
+    while True:
+        
+        # Generate random values for the wind turbine parameters
+        tyme = time.strftime("%H:%M:%S", time.localtime())
+        wind_speed = round(random.uniform(0, 50), 2)
+        wind_direction = round(random.uniform(0, 360), 2)
+        rotor_speed = round(random.uniform(0, 1000), 2)
+        blade_angle = round(random.uniform(-5, 5), 2)
+        power_output = round(random.uniform(0, 1000), 2)
+        generator_rpm = round(random.uniform(0, 2000), 2)
 
-def on_message(client, userdata, message):
-    print("Received message '" + str(message.payload) + "' on topic '" + message.topic + "' with QoS " + str(message.qos))
-
-def on_log(client, userdata, level, buf):
-    print("log: ",buf)
-
-device_id = os.getenv("Device_ID") # Add device id
-iot_hub_name = os.getenv("iot_hub_name") # Add iot hub name
-sas_token = os.getenv('Pry_Conn_String') # Add sas token
-client = mqtt.Client(client_id=device_id, protocol=mqtt.MQTTv311,  clean_session=False)
-client.on_log = on_log
-client.tls_set_context(context=None)
-
-# Set up client credentials
-username = "{}.azure-devices.net/{}/api-version=2018-06-30".format(iot_hub_name, device_id)
-client.username_pw_set(username=username, password=sas_token)
-
-# Connect to the Azure IoT Hub
-client.on_connect = on_connect
-client.connect(iot_hub_name+".azure-devices.net", port=8883)
-
-# Publish
-time.sleep(1)
-for x in range(3):        
-        exp = datetime.datetime.utcnow() 
-        abcstring1={
-                "AI01":random.randint(0, 100)
+        # Create a JSON message with the telemetry data
+        telemetry = {
+            "Time": tyme,	
+            "wind_speed": wind_speed,
+            "wind_direction": wind_direction,
+            "rotor_speed": rotor_speed,
+            "blade_angle": blade_angle,
+            "power_output": power_output,
+            "generator_rpm": generator_rpm
         }
-        data_out1 = json.dumps(abcstring1)
-        client.publish("devices/{device_id}/messages/events/".format(device_id=device_id), payload=data_out1, qos=1, retain=False)
-        print("Publishing on devices/" + device_id + "/messages/events/",data_out1)
-        time.sleep(5)
+        
+        data = json.dumps(telemetry)
+        
+        msg = "for device:/" + os.getenv("Device_ID")+ "/messages/events/",data
+        
+        # Send the message.
+        print("Sending message # + str(i) + : {}".format(msg) )
+        await device_client.send_message(data)
+        print ( "Message successfully sent" )
+        time.sleep(1)
+        
+        
 
-# Subscribe 
-client.on_message = on_message
-client.on_subscribe = on_subscribe 
-client.subscribe("devices/{device_id}/messages/devicebound/#".format(device_id=device_id))
-
-client.loop_forever() 
+        # Shut down the client
+        #device_client.shutdown()
+            
+        
+if __name__ == "__main__":
+    msg_no = 100
+    asyncio.run(send_data(msg_no))
