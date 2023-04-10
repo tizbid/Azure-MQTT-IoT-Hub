@@ -21,14 +21,17 @@ Run `terraform apply` to create the infastructures.
 
 #### Generate IoT data : 
 
-`generate-data.py`, generates the IoT data used in this demo and connects to azure via MQTT using the Azure Python SDK
+`generate-data.py`, generates the IoT data, and transfers it to Azure IoT eventhub via MQTT using the Azure Python SDK
 
-`from azure.iot.device.aio import IoTHubDeviceClient`
+
+To view data uploads, from the Azure CLI, run the commandlet  `az iot hub monitor-events --hub-name <your-IoT-hubname> --device-id <your-device-id>`
 
 
 ##### Stream data
 
 Stream analytics is manually configured. It accepts input data from IoT hub and outputs it to Power BI and a storage container.
+
+
 
 ![Demo-Architecture](img.jpg) 
 
