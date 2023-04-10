@@ -26,6 +26,9 @@ Run `terraform apply` to create the infastructures.
 
 To view data uploads, from the Azure CLI, run the commandlet  `az iot hub monitor-events --hub-name <your-IoT-hubname> --device-id <your-device-id>`
 
+##### Uploads
+https://user-images.githubusercontent.com/56255193/231018415-3cb3a2d4-b4ef-470a-8863-2bb2fe27d4a0.mp4
+
 
 ##### Stream data
 
@@ -34,6 +37,9 @@ Stream analytics is manually configured. It accepts input data from IoT hub and 
 
 
 ![Demo-Architecture](img.jpg) 
+
+
+
 
 
 
