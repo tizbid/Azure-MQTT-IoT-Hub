@@ -25,12 +25,18 @@ Run `terraform apply` to create the infastructures.
 
 `from azure.iot.device.aio import IoTHubDeviceClient`
 
+##### Uploads
+https://user-images.githubusercontent.com/56255193/231018415-3cb3a2d4-b4ef-470a-8863-2bb2fe27d4a0.mp4
+
 
 ##### Stream data
 
 Stream analytics is manually configured. It accepts input data from IoT hub and outputs it to Power BI and a storage container.
 
 ![Demo-Architecture](img.jpg) 
+
+
+
 
 
 
