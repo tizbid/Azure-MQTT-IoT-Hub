@@ -32,7 +32,7 @@ https://user-images.githubusercontent.com/56255193/231018415-3cb3a2d4-b4ef-470a-
 
 ##### Stream data
 
-Stream analytics is manually configured. It accepts input data from IoT hub and outputs it to Power BI and a storage container.
+Stream analytics is manually configured. It accepts input data from IoT hub and outputs it to Grafana and a storage container.
 
 
 
